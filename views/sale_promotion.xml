@@ -1,0 +1,40 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="sale_promotion_tree">
+      <field name="name">sale_promotion_tree</field>
+      <field name="model">sale.promotion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="product"/>
+          <field name="quantity"/>
+          <field name="offer"/>
+          <field name="price"/>
+          <field name="total"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="sale_promotion_form">
+      <field name="name">sale_promotion_form</field>
+      <field name="model">sale.promotion</field>
+      <field name="arch" type="xml">
+        <form>
+          <group colspan="2" col="2">
+          <field name="product"/>
+          <field name="quantity"/>
+          <field name="offer"/>
+          <field name="price"/>
+          <field name="total"/>
+          </group >
+        </form>
+      </field>
+    </record>
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="sale_promotion_window">
+      <field name="name">sale_promotion</field>
+      <field name="res_model">sale.promotion</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem name="promotion" id="sale_promotion" parent="shop_menu_root" action="sale_promotion_window"/>
+  </data>
+</odoo>
