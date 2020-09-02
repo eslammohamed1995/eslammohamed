@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_coffee_order,coffee.order,model_coffee_order,,1,1,1,1
 access_order_line,order.line,model_order_line,,1,1,1,1
+access_sale_promotion,sale.promotion,model_sale_promotion,,1,1,1,1
