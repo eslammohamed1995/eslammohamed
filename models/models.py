@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class order(models.Model):
@@ -38,6 +39,15 @@ class order(models.Model):
                     if line.product_id == r.product:
                         line.discount = r.discount
 
+    @api.constrains('line_ids')
+    def _check_offer(self):
+        global count
+        count = 0
+        for record in self.line_ids:
+            if record.total == 0.00:
+                count = count + 1
+        if count > 1:
+            raise ValidationError("you already had offer")
 
 
 class product(models.Model):
