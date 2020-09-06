@@ -36,14 +36,8 @@ class order(models.Model):
             else:
                 for line in self.line_ids:
                     if line.product_id == r.product:
-                        vals = {
-                            "discount": r.discount,
-                            "total": line.total,
-                            "price": line.price,
-                            "order_id": self.id,
-                            "product_id": r.product.id
-                        }
-                        self.env["order.line"].create(vals)
+                        line.discount = r.discount
+
 
 
 class product(models.Model):
