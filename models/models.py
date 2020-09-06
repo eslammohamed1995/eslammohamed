@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class order(models.Model):
@@ -28,17 +27,16 @@ class order(models.Model):
         for r in self.env['sale.promotion'].search([]):
             if r.type == "offer":
                 for line in self.line_ids:
-                    if line.total == 0.00:
-                        count = count + 1
-                if count < 1:
-                    for line in self.line_ids:
+                    if line.add_offer == False:
                         if (line.product_id == r.product) & (line.quantity == r.quantity):
                             vals = {
                                 "quantity": r.offer_amount,
                                 "order_id": self.id,
-                                "product_id": r.get_product.id
+                                "product_id": r.get_product.id,
+                                "add_offer": True
                             }
                             self.env["order.line"].create(vals)
+
 
             else:
                 for line in self.line_ids:
@@ -52,11 +50,12 @@ class product(models.Model):
 
     product_id = fields.Many2one("product.product", string="name of product",
                                  ondelete='set null')
-
+    add_offer = fields.Boolean()
     quantity = fields.Float(string="quantity", default=1.00)
     price = fields.Float(string="price")
     total = fields.Float(string="total", compute="_total_price")
     discount = fields.Float(string="discount")
+    type_id = fields.Many2one("sale.promotion", string="type of offer")
     order_id = fields.Many2one("coffee.order", string="order_id")
 
     @api.depends('price', 'quantity')
@@ -70,13 +69,3 @@ class product(models.Model):
     @api.onchange('product_id')
     def _price_change(self):
         self.price = self.product_id.list_price
-
-    @api.constrains('total')
-    def _check_offer(self):
-        global count
-        count = 0
-        for r in self:
-            if r.total == 0.00:
-                count = count + 1
-        if count > 1:
-            raise ValidationError("you get offer")
