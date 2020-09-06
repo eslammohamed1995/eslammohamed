@@ -28,10 +28,9 @@ class order(models.Model):
                     vals = {
                         "quantity": r.offer_amount,
                         "order_id": self.id,
-                        "product_id":r.get_product.id
+                        "product_id": r.get_product.id
                     }
                     self.env["order.line"].create(vals)
-
 
 
 class product(models.Model):
@@ -44,13 +43,16 @@ class product(models.Model):
     quantity = fields.Float(string="quantity", default=1.00)
     price = fields.Float(string="price")
     total = fields.Float(string="total", compute="_total_price")
+    discount = fields.Float(string="discount")
     order_id = fields.Many2one("coffee.order", string="order_id")
-    discount = fields.float(string="discount")
 
     @api.depends('price', 'quantity')
     def _total_price(self):
         for r in self:
-            r.total = r.price * r.quantity
+            if r.discount == 0:
+                r.total = r.price * r.quantity
+            else:
+                r.total = r.price * r.quantity - r.discount / 100 * (r.price * r.quantity)
 
     @api.onchange('product_id')
     def _price_change(self):
