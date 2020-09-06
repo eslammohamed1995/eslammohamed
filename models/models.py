@@ -22,6 +22,16 @@ class order(models.Model):
         result = super(order, self).create(vals)
         return result
 
+    @api.constrains('line_ids')
+    def _check_offer(self):
+        global count
+        count = 0
+        for r in self.env['order.line'].search([]):
+            if r.total == 0.00:
+                count = count + 1
+        if count > 1:
+            raise ValidationError("you get offer")
+
     def confirm(self):
         for r in self.env['sale.promotion'].search([]):
             if r.type == "offer":
@@ -38,16 +48,6 @@ class order(models.Model):
                 for line in self.line_ids:
                     if line.product_id == r.product:
                         line.discount = r.discount
-
-    @api.constrains('line_ids')
-    def _check_offer(self):
-        global count
-        count = 0
-        for record in self.line_ids:
-            if record.total == 0.00:
-                count = count + 1
-        if count > 1:
-            raise ValidationError("you already had offer")
 
 
 class product(models.Model):
