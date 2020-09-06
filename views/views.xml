@@ -1,94 +1,100 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="order_line_tree">
-      <field name="name">order_line_tree</field>
-      <field name="model">order.line</field>
-      <field name="arch" type="xml">
-        <tree editable="bottom">
-          <field name="product_id"/>
-          <field name="quantity"/>
-          <field name="price"/>
-          <field name="discount"/>
-          <field name="total"/>
-        </tree>
-      </field>
-    </record>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="order_line_tree">
+            <field name="name">order_line_tree</field>
+            <field name="model">order.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="product_id"/>
+                    <field name="quantity"/>
+                    <field name="discount"/>
+                    <field name="price"/>
+                    <field name="total"/>
+                </tree>
+            </field>
+        </record>
 
-    <record model="ir.ui.view" id="coffee_order_tree">
-      <field name="name">coffee_order_tree</field>
-      <field name="model">coffee.order</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="customer"/>
-          <field name="date"/>
-          <field name="number"/>
-          <field name="description"/>
-          <field name="line_ids"/>
-        </tree>
-      </field>
-    </record>
-    <record id="unique_sequence_id" model="ir.sequence">
-       <field name="name">Sequence Name Goes Here</field>
-       <field name="code">coffe.order</field>
-       <field name="active">TRUE</field>
-       <field name="prefix">OR</field>
-       <field name="padding">5</field>
-       <field name="number_next">1</field>
-       <field name="number_increment">1</field>
-       </record>
-    <record model="ir.ui.view" id="order_line_form">
-      <field name="name">order_line_form</field>
-      <field name="model">order.line</field>
-      <field name="arch" type="xml">
-        <form>
-          <group colspan="2" col="2">
-                <field name="product_id"/>
-                <field name="quantity"/>
-                <field name="price"/>
-                <field name="total"/>
-          </group >
-        </form>
-      </field>
-    </record>
-    <record model="ir.ui.view" id="coffee_order_form">
-      <field name="name">coffee_order_form</field>
-      <field name="model">coffee.order</field>
-      <field name="arch" type="xml">
-        <form>
-          <group colspan="2" col="2">
-            <field name="customer"/>
-            <field name="date"/>
-            <field name="number"/>
-            <field name="description"/>
-            <field name="line_ids"/>
-          </group >
-        </form>
-      </field>
-    </record>
+        <record model="ir.ui.view" id="coffee_order_tree">
+            <field name="name">coffee_order_tree</field>
+            <field name="model">coffee.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="customer"/>
+                    <field name="date"/>
+                    <field name="number"/>
+                    <field name="description"/>
+                    <field name="line_ids"/>
+                </tree>
+            </field>
+        </record>
+        <record id="unique_sequence_id" model="ir.sequence">
+            <field name="name">Sequence Name Goes Here</field>
+            <field name="code">coffee.order</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">OR</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+        <record model="ir.ui.view" id="order_line_form2">
+            <field name="name">order_line_form</field>
+            <field name="model">order.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group colspan="2" col="2">
+                        <field name="product_id"/>
+                        <field name="quantity"/>
+                        <field name="price"/>
+                        <field name="discount"/>
+                        <field name="total"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="coffee_order_form2">
+            <field name="name">coffee_order_form</field>
+            <field name="model">coffee.order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="confirm" string="add offer" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group colspan="2" col="2">
+                            <field name="customer"/>
+                            <field name="date"/>
+                            <field name="number"/>
+                            <field name="description"/>
+                            <field name="line_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- actions opening views on models -->
-    <record model="ir.actions.act_window" id="order_line_window">
-      <field name="name">order_line</field>
-      <field name="res_model">order.line</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    <record model="ir.actions.act_window" id="coffee_order_window">
-      <field name="name">order_line</field>
-      <field name="res_model">coffee.order</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-
-
-    <!-- Top menu item -->
-
-    <menuitem name="shop" id="shop_menu_root"/>
-
-    <!-- menu categories -->
-
-    <menuitem name="product" id="shop_product" parent="shop_menu_root" action="order_line_window"/>
-    <menuitem name="order" id="shop_order" parent="shop_menu_root" action="coffee_order_window"/>
+        <!-- actions opening views on models -->
+        <record model="ir.actions.act_window" id="order_line_window">
+            <field name="name">order_line</field>
+            <field name="res_model">order.line</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window" id="coffee_order_window">
+            <field name="name">order_line</field>
+            <field name="res_model">coffee.order</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
 
-  </data>
+        <!-- Top menu item -->
+
+        <menuitem name="shop" id="shop_menu_root"/>
+
+        <!-- menu categories -->
+
+        <menuitem name="product" id="shop_product" parent="shop_menu_root" action="order_line_window"/>
+        <menuitem name="order" id="shop_order" parent="shop_menu_root" action="coffee_order_window"/>
+
+
+    </data>
 </odoo>
