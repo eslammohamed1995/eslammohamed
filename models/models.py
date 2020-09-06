@@ -22,27 +22,23 @@ class order(models.Model):
         result = super(order, self).create(vals)
         return result
 
-    @api.constrains('line_ids')
-    def _check_offer(self):
+    def confirm(self):
         global count
         count = 0
-        for r in self.env['order.line'].search([]):
-            if r.total == 0.00:
-                count = count + 1
-        if count > 1:
-            raise ValidationError("you get offer")
-
-    def confirm(self):
         for r in self.env['sale.promotion'].search([]):
             if r.type == "offer":
                 for line in self.line_ids:
-                    if (line.product_id == r.product) & (line.quantity == r.quantity):
-                        vals = {
-                            "quantity": r.offer_amount,
-                            "order_id": self.id,
-                            "product_id": r.get_product.id
-                        }
-                        self.env["order.line"].create(vals)
+                    if line.total == 0.00:
+                        count = count + 1
+                if count < 1:
+                    for line in self.line_ids:
+                        if (line.product_id == r.product) & (line.quantity == r.quantity):
+                            vals = {
+                                "quantity": r.offer_amount,
+                                "order_id": self.id,
+                                "product_id": r.get_product.id
+                            }
+                            self.env["order.line"].create(vals)
 
             else:
                 for line in self.line_ids:
@@ -74,3 +70,13 @@ class product(models.Model):
     @api.onchange('product_id')
     def _price_change(self):
         self.price = self.product_id.list_price
+
+    @api.constrains('total')
+    def _check_offer(self):
+        global count
+        count = 0
+        for r in self:
+            if r.total == 0.00:
+                count = count + 1
+        if count > 1:
+            raise ValidationError("you get offer")
