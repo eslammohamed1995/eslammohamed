@@ -23,14 +23,27 @@ class order(models.Model):
 
     def confirm(self):
         for r in self.env['sale.promotion'].search([]):
-            for line in self.line_ids:
-                if (line.product_id == r.product) & (line.quantity == r.quantity):
-                    vals = {
-                        "quantity": r.offer_amount,
-                        "order_id": self.id,
-                        "product_id": r.get_product.id
-                    }
-                    self.env["order.line"].create(vals)
+            if r.type == "offer":
+                for line in self.line_ids:
+                    if (line.product_id == r.product) & (line.quantity == r.quantity):
+                        vals = {
+                            "quantity": r.offer_amount,
+                            "order_id": self.id,
+                            "product_id": r.get_product.id
+                        }
+                        self.env["order.line"].create(vals)
+
+            else:
+                for line in self.line_ids:
+                    if line.product_id == r.product:
+                        vals = {
+                            "discount": r.discount,
+                            "total": line.total,
+                            "price": line.price,
+                            "order_id": self.id,
+                            "product_id": r.product.id
+                        }
+                        self.env["order.line"].create(vals)
 
 
 class product(models.Model):
@@ -52,7 +65,7 @@ class product(models.Model):
             if r.discount == 0:
                 r.total = r.price * r.quantity
             else:
-                r.total = r.price * r.quantity - r.discount / 100 * (r.price * r.quantity)
+                r.total = r.price * r.quantity * (1.00 - r.discount / 100 * 1.00)
 
     @api.onchange('product_id')
     def _price_change(self):
