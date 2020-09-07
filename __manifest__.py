@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','sale'],
 
     # always loaded
     'data': [
@@ -29,6 +29,7 @@
         'reports/report.xml',
         'views/templates.xml',
         'views/sale_promotion.xml',
+        'views/sales.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
