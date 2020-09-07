@@ -7,6 +7,8 @@
             <field name="arch" type="xml">
                 <tree editable="bottom">
                     <field name="product_id"/>
+                    <field name="add_offer"/>
+                    <field name="type_id"/>
                     <field name="quantity"/>
                     <field name="discount"/>
                     <field name="price"/>
@@ -24,7 +26,6 @@
                     <field name="date"/>
                     <field name="number"/>
                     <field name="description"/>
-                    <field name="line_ids"/>
                 </tree>
             </field>
         </record>
