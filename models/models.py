@@ -17,13 +17,11 @@ class order(models.Model):
 
     @api.model
     def create(self, vals):
-        vals['number'] = self.env['ir.sequence'].next_by_code('coffe.order')
+        vals['number'] = self.env['ir.sequence'].next_by_code('coffee.order')
         result = super(order, self).create(vals)
         return result
 
     def confirm(self):
-        global count
-        count = 0
         for r in self.env['sale.promotion'].search([]):
             if r.type == "offer":
                 for line in self.line_ids:
