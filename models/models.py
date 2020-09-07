@@ -27,17 +27,15 @@ class order(models.Model):
         for r in self.env['sale.promotion'].search([]):
             if r.type == "offer":
                 for line in self.line_ids:
-                    if line.add_offer == False:
+                    if (line.add_offer == True) & (r.add_offers == True):
                         if (line.product_id == r.product) & (line.quantity == r.quantity):
                             vals = {
                                 "quantity": r.offer_amount,
                                 "order_id": self.id,
                                 "product_id": r.get_product.id,
-                                "add_offer": True
                             }
                             self.env["order.line"].create(vals)
-
-
+                            line.add_offer = False
             else:
                 for line in self.line_ids:
                     if line.product_id == r.product:
