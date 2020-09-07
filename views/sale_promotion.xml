@@ -1,32 +1,34 @@
 <odoo>
   <data>
     <!-- explicit list view definition -->
-    <record model="ir.ui.view" id="sale_promotion_tree">
-      <field name="name">sale_promotion_tree</field>
-      <field name="model">sale.promotion</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="product"/>
-          <field name="quantity"/>
-          <field name="offer"/>
-          <field name="price"/>
-          <field name="total"/>
-        </tree>
-      </field>
-    </record>
+
     <record model="ir.ui.view" id="sale_promotion_form">
       <field name="name">sale_promotion_form</field>
       <field name="model">sale.promotion</field>
       <field name="arch" type="xml">
         <form>
           <group colspan="2" col="2">
+          <field name="type"/>
+          <field name="add_offers"/>
           <field name="product"/>
           <field name="quantity"/>
-          <field name="offer"/>
-          <field name="price"/>
-          <field name="total"/>
+          <field name="get_product"  attrs="{'invisible': [('type', '=', 'draft')]}"/>
+          <field name="offer_amount"  attrs="{'invisible': [('type', '=', 'draft')]}"/>
+          <field name="discount"/>
           </group >
         </form>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="sale_promotion_tree">
+      <field name="name">sale_promotion_tree</field>
+      <field name="model">sale.promotion</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="type"/>
+          <field name="product"/>
+          <field name="quantity"  attrs="{'invisible': [('type', '=', 'draft')]}"/>
+          <field name="discount"/>
+        </tree>
       </field>
     </record>
     <!-- actions opening views on models -->
