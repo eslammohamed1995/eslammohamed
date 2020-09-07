@@ -5,28 +5,15 @@ from odoo import models, fields, api
 class promotion(models.Model):
     _name = 'sale.promotion'
     _description = 'sale_promotion'
+    _rec_name = "product"
 
-    product = fields.Selection(selection=[
-        ('draft', 'Tea'),
-        ('orange', 'Orange juice'),
-    ], string='product', required=True)
-
+    type = fields.Selection(selection=[
+        ('draft', 'discount'),
+        ('offer', 'buy x get y'),
+    ], string='Type', required=True)
+    product = fields.Many2one("product.product", string="product")
+    add_offers = fields.Boolean()
     quantity = fields.Float(string="quantity", default=1.00)
-    offer = fields.Float(string="offer", readonly=True, store=True)
-    price = fields.Float(string="Price", store=True)
-    total = fields.Float(string="total", store=True)
-
-    @api.onchange('price', 'quantity')
-    def _total_price(self):
-        for r in self:
-            r.total = r.price * r.quantity
-
-    @api.onchange('product')
-    def _price_change(self):
-        if self.product == "draft":
-            self.price = 10.00
-        elif self.product == "orange":
-            self.price = 20.00
-
-
-
+    get_product = fields.Many2one("product.product", string="get product")
+    offer_amount = fields.Float(string="offer amount", default=2.00)
+    discount = fields.Float(string="discount", default=2.00)
